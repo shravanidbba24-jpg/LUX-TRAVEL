@@ -1,0 +1,8 @@
+{
+  "name": "Infinity Travels — Luxury Tour Booking & Python Frontend",
+  "description": "Interactive holiday package booking platform with India & International tours, day escapades, instant booking calculator, and full Python frontend code conversions (Streamlit, NiceGUI, Flask, and live Pyodide runner).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,12 @@
+[tool.vercel]
+entrypoint = "app.py"
+
+[project]
+name = "infinity-travels"
+version = "1.0.0"
+description = "Infinity Travels - Luxury Booking Platform"
+dependencies = [
+    "flask>=3.0.0",
+    "werkzeug>=3.0.0",
+    "requests>=2.31.0"
+]

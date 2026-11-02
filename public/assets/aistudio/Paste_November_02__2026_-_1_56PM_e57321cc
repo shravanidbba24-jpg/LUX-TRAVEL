@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Travels — Your Journey Begins Here</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8922A;
+    --gold-light: #E8B94F;
+    --terra: #C4613A;
+    --deep: #1A1208;
+    --cream: #FBF7EE;
+    --sand: #F5EFE0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--deep); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(26,18,8,0.95); backdrop-filter: blur(10px);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold-light); }
+  .logo span { color: var(--terra); }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav ul a { color: #F5EFE0; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  nav ul a:hover { color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(rgba(15,10,5,0.62), rgba(20,13,5,0.70)),
+      url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&auto=format&fit=crop') center/cover no-repeat;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 6rem 2rem 3rem;
+  }
+  .hero-badge {
+    background: var(--terra); color: white;
+    padding: 0.4rem 1.2rem; border-radius: 30px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: var(--sand); line-height: 1.1; margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--gold-light); }
+  .hero p { color: #A89880; font-size: 1.1rem; max-width: 500px; margin-bottom: 2.5rem; line-height: 1.6; }
+  .hero-btn {
+    background: var(--gold); color: var(--deep);
+    padding: 1rem 2.5rem; border-radius: 50px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    border: none; text-decoration: none; display: inline-block;
+    transition: all 0.2s; letter-spacing: 0.5px;
+  }
+  .hero-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  /* SECTION COMMON */
+  .packages { padding: 5rem 3rem; background: var(--cream); }
+  .day-trips { padding: 5rem 3rem; background: var(--sand); }
+  .section-title { text-align: center; margin-bottom: 3rem; }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; color: var(--deep); margin-bottom: 0.5rem;
+  }
+  .section-title p { color: #6B5B45; font-size: 1rem; }
+  .section-title .section-tag {
+    display: inline-block; background: var(--terra); color: white;
+    padding: 0.3rem 1rem; border-radius: 30px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+
+  /* CARDS */
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+  }
+  .card {
+    background: white; border-radius: 16px;
+    overflow: hidden; box-shadow: 0 4px 20px rgba(26,18,8,0.08);
+    transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(26,18,8,0.15); }
+  .card.selected { border-color: var(--gold); }
+  .card-img {
+    height: 160px; display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; position: relative;
+  }
+  .badge-days {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.55); color: white;
+    padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+  }
+  .card-body { padding: 1.2rem; }
+  .card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.25rem; }
+  .card-body .location { color: #6B5B45; font-size: 0.82rem; margin-bottom: 0.7rem; }
+  .card-features { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .feature-tag {
+    background: var(--sand); color: var(--deep);
+    padding: 0.2rem 0.55rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500;
+  }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .price { font-size: 1.25rem; font-weight: 700; color: var(--gold); }
+  .price span { font-size: 0.72rem; color: #6B5B45; font-weight: 400; }
+  .select-btn {
+    background: var(--deep); color: white;
+    border: none; padding: 0.5rem 1.1rem;
+    border-radius: 25px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .select-btn:hover, .card.selected .select-btn { background: var(--gold); color: var(--deep); }
+
+  /* DAY TRIP CARDS - smaller style */
+  .day-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem; max-width: 600px; margin: 0 auto;
+  }
+  .day-card {
+    background: white; border-radius: 16px;
+    overflow: hidden; box-shadow: 0 4px 20px rgba(26,18,8,0.08);
+    transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .day-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(26,18,8,0.12); }
+  .day-card.selected { border-color: var(--gold); }
+  .day-card-icon { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; }
+  .day-card-body { padding: 1.2rem; }
+  .day-card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
+  .day-card-body .sub { color: #6B5B45; font-size: 0.82rem; margin-bottom: 0.8rem; }
+  .day-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+  /* BOOKING FORM */
+  .booking-section {
+    padding: 5rem 3rem;
+    background: linear-gradient(135deg, #1A1208, #2D1E0A);
+  }
+  .booking-section .section-title h2 { color: var(--sand); }
+  .booking-section .section-title p { color: #A89880; }
+  .form-container {
+    max-width: 650px; margin: 0 auto;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,146,42,0.3);
+    border-radius: 20px; padding: 2.5rem;
+  }
+  .selected-package-display {
+    background: rgba(200,146,42,0.15);
+    border: 1px solid var(--gold);
+    border-radius: 12px; padding: 1rem 1.5rem;
+    margin-bottom: 2rem; display: none;
+  }
+  .selected-package-display.show { display: block; }
+  .selected-package-display h4 { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+  .selected-package-display p { color: var(--sand); font-size: 1.1rem; font-weight: 600; margin-top: 0.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+  .form-group label { color: #A89880; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.4rem; text-transform: uppercase; }
+  .form-group input, .form-group select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(200,146,42,0.25);
+    color: var(--sand); padding: 0.85rem 1rem;
+    border-radius: 10px; font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s; outline: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: #2D1E0A; color: var(--sand); }
+  .form-group input::placeholder { color: #5A4A35; }
+  .total-price {
+    background: rgba(200,146,42,0.1);
+    border: 1px dashed rgba(200,146,42,0.4);
+    border-radius: 10px; padding: 1rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .total-price span { color: #A89880; font-size: 0.9rem; }
+  .total-price strong { color: var(--gold-light); font-size: 1.4rem; font-weight: 700; }
+  .book-btn {
+    width: 100%; background: var(--gold);
+    color: var(--deep); border: none;
+    padding: 1.1rem; border-radius: 12px;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px; transition: all 0.2s;
+  }
+  .book-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: white; border-radius: 24px;
+    padding: 3rem; text-align: center; max-width: 480px; width: 100%;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--deep); margin-bottom: 0.5rem; }
+  .modal p { color: #6B5B45; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .booking-id { background: var(--sand); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; }
+  .booking-id span { display: block; font-size: 0.75rem; color: #6B5B45; text-transform: uppercase; letter-spacing: 1px; }
+  .booking-id strong { font-size: 1.3rem; color: var(--gold); font-weight: 700; letter-spacing: 3px; }
+  .modal-details { text-align: left; background: var(--sand); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+  .modal-details p { font-size: 0.88rem; color: var(--deep); padding: 0.3rem 0; border-bottom: 1px solid #E8DFD0; }
+  .modal-details p:last-child { border-bottom: none; }
+  .modal-details strong { color: var(--gold); }
+  .modal-close {
+    background: var(--deep); color: white; border: none;
+    padding: 0.9rem 2.5rem; border-radius: 30px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .modal-close:hover { background: var(--gold); color: var(--deep); }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep); color: #5A4A35;
+    text-align: center; padding: 1.5rem; font-size: 0.85rem;
+  }
+  footer span { color: var(--gold); }
+
+  /* CARD COLORS */
+  .c-paris    { background: linear-gradient(135deg, #2C3E8C, #6A5ACD); }
+  .c-maldives { background: linear-gradient(135deg, #00B4D8, #48CAE4); }
+  .c-dubai    { background: linear-gradient(135deg, #D4A017, #F4C542); }
+  .c-kerala   { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .c-goa      { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .c-hyd      { background: linear-gradient(135deg, #f7971e, #ffd200); }
+  .c-mumbai   { background: linear-gradient(135deg, #fc5c7d, #6a3093); }
+  .c-pune     { background: linear-gradient(135deg, #11998e, #38ef7d); }
+  .c-delhi    { background: linear-gradient(135deg, #ee0979, #ff6a00); }
+  .c-tirupati { background: linear-gradient(135deg, #f9a825, #fdd835); }
+  .c-ladakh   { background: linear-gradient(135deg, #5C6BC0, #B39DDB); }
+  .c-manali   { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .c-rajasthan{ background: linear-gradient(135deg, #fa709a, #fee140); }
+  .c-bangkok  { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    .packages, .day-trips, .booking-section { padding: 3rem 1rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-container { padding: 1.5rem; }
+    .day-card { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Infinity<span> Travels</span></div>
+  <ul>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#daytrips">Day Trips</a></li>
+    <li><a href="#booking">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✈️ India & International Packages</div>
+  <h1>Travel Beyond<br><span>Your Limits</span></h1>
+  <p>Handpicked travel packages for every kind of explorer. From local day trips to international adventures — we've got you covered.</p>
+  <a href="#packages" class="hero-btn">Explore Packages →</a>
+</section>
+
+<!-- MAIN PACKAGES -->
+<section class="packages" id="packages">
+  <div class="section-title">
+    <div class="section-tag">✈️ Holiday Packages</div>
+    <h2>Our Travel Packages</h2>
+    <p>Click on any package to select and book</p>
+  </div>
+  <div class="cards">
+
+    <div class="card" onclick="selectPackage(this, 'Paris City of Love', 100000)">
+      <div class="card-img c-paris"><img src="https://i.pinimg.com/736x/4a/b8/a5/4ab8a52ec69e971d00f94c0d0c45ad76.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">7 Days</span></div>
+      <div class="card-body">
+        <h3>Paris City of Love</h3>
+        <div class="location">📍 Paris, France</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">✈️ Flight</span>
+          <span class="feature-tag">🗺️ Sightseeing</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹1,00,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Maldives Island Escape', 80000)">
+      <div class="card-img c-maldives"><img src="https://i.pinimg.com/736x/14/1d/f7/141df716ab8e751b9d7b9015cf72211c.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Maldives Island Escape</h3>
+        <div class="location">📍 Maldives</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Resort</span>
+          <span class="feature-tag">🤿 Snorkeling</span>
+          <span class="feature-tag">🍽️ Meals</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹80,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Dubai Desert Glamour', 100000)">
+      <div class="card-img c-dubai"><img src="https://i.pinimg.com/1200x/64/0e/c3/640ec39a093f78068ce041dd95b03a16.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Dubai Desert Glamour</h3>
+        <div class="location">📍 Dubai, UAE</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🐪 Desert Safari</span>
+          <span class="feature-tag">✈️ Flight</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹1,00,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Kerala Backwaters Bliss', 25000)">
+      <div class="card-img c-kerala"><img src="https://i.pinimg.com/736x/31/bc/84/31bc84e0fa95c63cffe8a77f39d3e894.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Kerala Backwaters Bliss</h3>
+        <div class="location">📍 Kerala, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🛶 Houseboat</span>
+          <span class="feature-tag">🌿 Nature</span>
+          <span class="feature-tag">🍽️ Meals</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹25,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Goa Beach Party', 20000)">
+      <div class="card-img c-goa"><img src="https://i.pinimg.com/1200x/e9/87/9e/e9879e7e5dc741625e9016bda1d80182.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Goa Beach Party</h3>
+        <div class="location">📍 Goa, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🚌 Transport</span>
+          <span class="feature-tag">🏄 Water Sports</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹20,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Hyderabad Heritage Tour', 25000)">
+      <div class="card-img c-hyd"><img src="https://i.pinimg.com/1200x/38/9e/2b/389e2b5dbd406338f6d48d7892849c34.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">3N/4D</span></div>
+      <div class="card-body">
+        <h3>Hyderabad Heritage Tour</h3>
+        <div class="location">📍 Hyderabad, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🍛 Biryani Trail</span>
+          <span class="feature-tag">🗺️ Sightseeing</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹25,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Mumbai City Lights', 5500)">
+      <div class="card-img c-mumbai"><img src="https://i.pinimg.com/736x/2e/13/2e/2e132e59000aa4d018ec74e2dd06266c.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">2N/3D</span></div>
+      <div class="card-body">
+        <h3>Mumbai City Lights</h3>
+        <div class="location">📍 Mumbai, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🚌 Transport</span>
+          <span class="feature-tag">🎭 Bollywood</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹5,500 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Pune Hills Getaway', 12000)">
+      <div class="card-img c-pune"><img src="https://i.pinimg.com/736x/5e/0a/d4/5e0ad4dc950fe58ed26b1d930009d776.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">3N/4D</span></div>
+      <div class="card-body">
+        <h3>Pune Hills Getaway</h3>
+        <div class="location">📍 Pune, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🌄 Forts</span>
+          <span class="feature-tag">🚌 Transport</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹12,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Delhi Capital Explorer', 18000)">
+      <div class="card-img c-delhi"><img src="https://i.pinimg.com/736x/b6/55/dc/b655dcdfe59835357a93dd30ca070c0a.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">2N/3D</span></div>
+      <div class="card-body">
+        <h3>Delhi Capital Explorer</h3>
+        <div class="location">📍 Delhi, India</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🕌 Heritage</span>
+          <span class="feature-tag">🍢 Street Food</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹18,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Tirupati Divine Darshan', 17000)">
+      <div class="card-img c-tirupati"><img src="https://i.pinimg.com/736x/8d/1b/09/8d1b094207422a63b790f727277e64c5.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">2N/3D</span></div>
+      <div class="card-body">
+        <h3>Tirupati Divine Darshan</h3>
+        <div class="location">📍 Tirupati, Andhra Pradesh</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">🚌 Transport</span>
+          <span class="feature-tag">🎟️ VIP Darshan</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹17,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Ladakh Mountain Odyssey', 58000)">
+      <div class="card-img c-ladakh"><img src="https://i.pinimg.com/736x/55/1b/bc/551bbc813cc826ee7f72d6ca58ec9b3b.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Ladakh Mountain Odyssey</h3>
+        <div class="location">📍 Leh, Nubra, Pangong</div>
+        <div class="card-features">
+          <span class="feature-tag">⛺ Camping</span>
+          <span class="feature-tag">🏍️ Bike Ride</span>
+          <span class="feature-tag">🌌 Stargazing</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹58,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Manali Snow Adventure', 40000)">
+      <div class="card-img c-manali"><img src="https://i.pinimg.com/736x/5c/7e/10/5c7e10037f1c91aee7dba92ac780b897.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">7 Days</span></div>
+      <div class="card-body">
+        <h3>Manali Snow Adventure</h3>
+        <div class="location">📍 Manali, Himachal Pradesh</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">⛷️ Snow Sports</span>
+          <span class="feature-tag">🚌 Transport</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹40,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Rajasthan Royal Retreat', 60000)">
+      <div class="card-img c-rajasthan"><img src="https://i.pinimg.com/736x/60/13/e4/6013e43e69955c724d78cad528ced1fd.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">7 Days</span></div>
+      <div class="card-body">
+        <h3>Rajasthan Royal Retreat</h3>
+        <div class="location">📍 Jaipur · Jodhpur · Udaipur</div>
+        <div class="card-features">
+          <span class="feature-tag">🏯 Heritage Hotel</span>
+          <span class="feature-tag">🐪 Camel Safari</span>
+          <span class="feature-tag">🎨 Culture</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹60,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="selectPackage(this, 'Bangkok Exotic Getaway', 69000)">
+      <div class="card-img c-bangkok"><img src="https://i.pinimg.com/736x/87/26/b8/8726b87b7aa340690eff70bfd0874a5d.jpg" style="width:100%;height:100%;object-fit:cover;"><span class="badge-days">4N/5D</span></div>
+      <div class="card-body">
+        <h3>Bangkok Exotic Getaway</h3>
+        <div class="location">📍 Bangkok, Thailand</div>
+        <div class="card-features">
+          <span class="feature-tag">🏨 Hotel</span>
+          <span class="feature-tag">✈️ Flight</span>
+          <span class="feature-tag">🌃 Nightlife</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">₹69,000 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DAY TRIPS SECTION -->
+<section class="day-trips" id="daytrips">
+  <div class="section-title">
+    <div class="section-tag">🌅 Quick Escapes</div>
+    <h2>Day Escapades</h2>
+    <p>Short on time? These 1-day trips are perfect for a quick getaway!</p>
+  </div>
+  <div class="day-cards">
+
+    <div class="day-card" onclick="selectPackage(this, 'Pune City Darshan', 1100)">
+      <div class="day-card-icon c-pune"><img src="https://i.pinimg.com/736x/5e/0a/d4/5e0ad4dc950fe58ed26b1d930009d776.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="day-card-body">
+        <h3>Pune City Darshan</h3>
+        <div class="sub">📍 Pune · 1 Day Trip</div>
+        <div class="card-features" style="margin-bottom:0.8rem">
+          <span class="feature-tag">🚌 AC Bus</span>
+          <span class="feature-tag">🗺️ Guided Tour</span>
+        </div>
+        <div class="day-card-footer">
+          <div class="price">₹1,100 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card" onclick="selectPackage(this, 'Mumbai City Darshan', 1300)">
+      <div class="day-card-icon c-mumbai"><img src="https://i.pinimg.com/736x/2e/13/2e/2e132e59000aa4d018ec74e2dd06266c.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="day-card-body">
+        <h3>Mumbai City Darshan</h3>
+        <div class="sub">📍 Mumbai · 1 Day Trip</div>
+        <div class="card-features" style="margin-bottom:0.8rem">
+          <span class="feature-tag">🚌 AC Bus</span>
+          <span class="feature-tag">🗺️ Guided Tour</span>
+        </div>
+        <div class="day-card-footer">
+          <div class="price">₹1,300 <span>/person</span></div>
+          <button class="select-btn">Select</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section class="booking-section" id="booking">
+  <div class="section-title">
+    <h2>Book Your Trip</h2>
+    <p>Fill in your details and confirm your booking</p>
+  </div>
+  <div class="form-container">
+
+    <div class="selected-package-display" id="pkgDisplay">
+      <h4>Selected Package</h4>
+      <p id="pkgName">None selected</p>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Shravani">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Shravani@email.com">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="9876543210">
+      </div>
+      <div class="form-group">
+        <label>Travel Date</label>
+        <input type="date" id="travelDate">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>No. of Persons</label>
+        <select id="adults" onchange="calcTotal()">
+          <option value="1">1 Person</option>
+          <option value="2">2 Persons</option>
+          <option value="3">3 Persons</option>
+          <option value="4">4 Persons</option>
+          <option value="5">5 Persons</option>
+          <option value="6">6 Persons</option>
+          <option value="7">7 Persons</option>
+          <option value="8">8 Persons</option>
+          <option value="9">9 Persons</option>
+          <option value="10">10 Persons</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Package</label>
+        <select id="pkgSelect" onchange="selectFromDropdown()">
+          <option value="">-- Select Package --</option>
+          <optgroup label="✈️ Holiday Packages">
+            <option value="Paris City of Love|100000">Paris City of Love — ₹1,00,000</option>
+            <option value="Maldives Island Escape|80000">Maldives Island Escape — ₹80,000</option>
+            <option value="Dubai Desert Glamour|100000">Dubai Desert Glamour — ₹1,00,000</option>
+            <option value="Kerala Backwaters Bliss|25000">Kerala Backwaters Bliss — ₹25,000</option>
+            <option value="Goa Beach Party|20000">Goa Beach Party — ₹20,000</option>
+            <option value="Hyderabad Heritage Tour|25000">Hyderabad Heritage Tour — ₹25,000</option>
+            <option value="Mumbai City Lights|5500">Mumbai City Lights — ₹5,500</option>
+            <option value="Pune Hills Getaway|12000">Pune Hills Getaway — ₹12,000</option>
+            <option value="Delhi Capital Explorer|18000">Delhi Capital Explorer — ₹18,000</option>
+            <option value="Tirupati Divine Darshan|17000">Tirupati Divine Darshan — ₹17,000</option>
+            <option value="Ladakh Mountain Odyssey|58000">Ladakh Mountain Odyssey — ₹58,000</option>
+            <option value="Manali Snow Adventure|40000">Manali Snow Adventure — ₹40,000</option>
+            <option value="Rajasthan Royal Retreat|60000">Rajasthan Royal Retreat — ₹60,000</option>
+            <option value="Bangkok Exotic Getaway|69000">Bangkok Exotic Getaway — ₹69,000</option>
+          </optgroup>
+          <optgroup label="🌅 Day Escapades">
+            <option value="Pune City Darshan|1100">Pune City Darshan — ₹1,100</option>
+            <option value="Mumbai City Darshan|1300">Mumbai City Darshan — ₹1,300</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="total-price">
+      <span>Total Amount</span>
+      <strong id="totalAmt">₹0</strong>
+    </div>
+
+    <button class="book-btn" onclick="confirmBooking()">🎒 Confirm Booking</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Infinity Travels</span>. All rights reserved. | Made with ❤️ for Explorers</p>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Your dream trip is booked! Our team will contact you shortly.</p>
+    <div class="booking-id">
+      <span>Booking ID</span>
+      <strong id="bookingId">IT-000000</strong>
+    </div>
+    <div class="modal-details" id="modalDetails"></div>
+    <button class="modal-close" onclick="closeModal()">Done ✓</button>
+  </div>
+</div>
+
+<script>
+  let selectedPkg = null;
+  let selectedPrice = 0;
+
+  document.getElementById('travelDate').min = new Date().toISOString().split('T')[0];
+
+  function selectPackage(card, name, price) {
+    document.querySelectorAll('.card, .day-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedPkg = name;
+    selectedPrice = price;
+
+    document.getElementById('pkgDisplay').classList.add('show');
+    document.getElementById('pkgName').textContent = name + ' — ₹' + price.toLocaleString() + '/person';
+
+    const sel = document.getElementById('pkgSelect');
+    for (let o of sel.options) {
+      if (o.value.startsWith(name + '|')) { sel.value = o.value; break; }
+    }
+
+    calcTotal();
+    setTimeout(() => document.getElementById('booking').scrollIntoView({ behavior: 'smooth' }), 300);
+  }
+
+  function selectFromDropdown() {
+    const val = document.getElementById('pkgSelect').value;
+    if (!val) return;
+    const [name, price] = val.split('|');
+    selectedPkg = name;
+    selectedPrice = parseInt(price);
+    document.getElementById('pkgDisplay').classList.add('show');
+    document.getElementById('pkgName').textContent = name + ' — ₹' + parseInt(price).toLocaleString() + '/person';
+    calcTotal();
+  }
+
+  function calcTotal() {
+    const persons = parseInt(document.getElementById('adults').value) || 1;
+    const total = selectedPrice * persons;
+    document.getElementById('totalAmt').textContent = total ? '₹' + total.toLocaleString() : '₹0';
+  }
+
+  function confirmBooking() {
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const date = document.getElementById('travelDate').value;
+    const persons = document.getElementById('adults').value;
+
+    if (!name) return alert('⚠️ Please enter your full name!');
+    if (!email || !email.includes('@')) return alert('⚠️ Please enter a valid email!');
+    if (!phone || phone.length < 10) return alert('⚠️ Please enter a valid phone number!');
+    if (!date) return alert('⚠️ Please select a travel date!');
+    if (!selectedPkg) return alert('⚠️ Please select a travel package!');
+
+    const bookingId = 'IT-' + Math.floor(100000 + Math.random() * 900000);
+    const total = (selectedPrice * parseInt(persons)).toLocaleString();
+    const formattedDate = new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    document.getElementById('bookingId').textContent = bookingId;
+    document.getElementById('modalDetails').innerHTML = `
+      <p>👤 <strong>Name:</strong> ${name}</p>
+      <p>📧 <strong>Email:</strong> ${email}</p>
+      <p>📦 <strong>Package:</strong> ${selectedPkg}</p>
+      <p>📅 <strong>Travel Date:</strong> ${formattedDate}</p>
+      <p>👥 <strong>Persons:</strong> ${persons}</p>
+      <p>💰 <strong>Total Amount:</strong> ₹${total}</p>
+    `;
+    document.getElementById('modal').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+    document.getElementById('fullName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('travelDate').value = '';
+    document.getElementById('adults').value = '1';
+    document.getElementById('pkgSelect').value = '';
+    document.getElementById('pkgDisplay').classList.remove('show');
+    document.querySelectorAll('.card, .day-card').forEach(c => c.classList.remove('selected'));
+    selectedPkg = null; selectedPrice = 0;
+    document.getElementById('totalAmt').textContent = '₹0';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

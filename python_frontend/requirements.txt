@@ -1,0 +1,7 @@
+# Infinity Travels — Python Frontend Dependencies
+streamlit>=1.35.0
+nicegui>=1.4.25
+python-fasthtml>=0.1.4
+flask>=3.0.0
+customtkinter>=5.2.0
+requests>=2.31.0
